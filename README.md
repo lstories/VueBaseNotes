@@ -1,2 +1,2 @@
 # VueNotes
-VueNotes
+Vue.js learning notes
