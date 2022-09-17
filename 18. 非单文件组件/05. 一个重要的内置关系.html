@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+
+</head>
+<body>
+    <!--
+
+
+    -->
+    
+    <div id="root">    
+        <!--new VueComponent只有在你写了<school/>或者<school></school>才会执行-->
+        <school></school>
+    </div>
+
+</body>
+
+<script>
+    Vue.config.productionTip = false;
+    // 一个内置关系
+    Vue.prototype.x = 99;
+    // 注意 VueComponent.prototype.__proto__ === Vue.prototype === vm.__proto__
+
+    // school组件
+    const school = Vue.extend({ 
+        template: `
+            <div>
+                <h1>学校名称:{{ name }}</h1>
+                <h1>学校地址:{{ address }}</h1>
+                <button @click="showName">点我提示学校名</button>
+                <button @click="cx">点我输出x</button>
+            </div>
+        `,
+        data() {
+            return {
+                name: "惠州学院",
+                address:"惠州"
+            }
+        },
+        methods: {
+            showName(){
+                console.log(this);
+                console.log(this.name)
+            },
+            cx(){
+                console.log(this);
+                console.log(this.__proto__.__proto__ === Vue.prototype);    // true 这里重要内置关系噢
+                console.log()
+                console.log(this.x);
+            }
+        }
+    });
+
+    new Vue({
+        el: "#root",
+        data:{
+            msg: 'hello vue'
+        },
+        components: {
+            school
+        }
+    });
+
+    // 验证
+    function Demo(){
+        this.a = 1;
+        this.b = 2;
+    }
+    const d = new Demo();
+    console.log(d.x);
+    console.log(Demo.prototype);    // 显示原型属性
+    console.log(d.__proto__);   // 隐式原型属性, 原型对象只有一个
+    // 操作原型对象追加x属性
+    Demo.prototype.x = 99;
+    console.log(d.__proto__ === Demo.prototype);
+
+
+</script>
+
+</html>

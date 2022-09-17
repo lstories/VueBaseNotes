@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+
+</head>
+<body>
+    <div id="root" :x="x">
+        <!-- 组件的嵌套 -->
+        <!-- <school></school>
+        <hello></hello>
+        <app></app> -->
+
+
+
+    </div>
+
+    <script>
+
+        Vue.config.productionTip = false;
+        // 创建一个student组件
+        const student = Vue.extend({ 
+            template:`
+                <div>
+                    <h2>学生姓名: {{name}}</h2>
+                    <h2>学生年龄: {{age}}</h2>    
+                </div>
+            `,
+            data() {
+                return {
+                    name: '靓仔',
+                    age:22
+                }
+            },
+        });
+
+        // 创建一个school组件
+        const school = Vue.extend({
+            template:`
+                <div>
+                    <h2>学校名称: {{name}}</h2>
+                    <h2>学校地址: {{address}}</h2>
+                    <!-- 子组件注册给哪个父组件, 就嵌套到哪个父组件中 -->
+                    <student></student>
+                </div>
+            `,
+            data() {
+                return {
+                    name: "东莞理工学院",
+                    address: "东莞"
+                }
+            },
+            // 组件嵌套, 这里也是局部注册组件, student是school组件的子组件
+            components: {
+                student
+            }
+        });
+
+        // 创建一个hello组件
+        const hello = Vue.extend({
+            template:`
+                <h1>{{msg}}</h1>
+            `,
+            data() {
+                return {
+                    msg: 'hello, my love',
+                }
+            },
+        });
+
+        // 创建app组件, 这个是vm管理的, app来管理其他的组件
+        const app = Vue.extend({
+            template:`
+                <div>
+                    <school></school>  
+                    <hello></hello>  
+                </div>
+            `,
+            components: {
+                school,
+                hello
+            }
+        });
+
+        new Vue({
+            template:`<app></app>`,
+            el:'#root',
+            // 注册组件(局部)
+            components: {
+                // school组件与hello组件平级
+                // school,
+                // hello
+                app,
+            },
+            data: {
+                x:1
+            }
+        })
+
+
+
+
+    </script>
+
+</body>
+</html>
